@@ -1,25 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import AppRouter from "./routes/AppRouter";
+import NavBar from "./components/UI/NavBar/NavBar";
+import MyFooter from "./components/UI/Footer/MyFooter";
+
+function AppContent() {
+
+    return (
+        <div
+            style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
+        >
+            <NavBar />
+            <main style={{ flex: 1 }}>
+                <AppRouter />
+            </main>
+            <MyFooter />
+        </div>
+    );
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return <AppContent />;
 }
 
 export default App;

@@ -1,0 +1,11 @@
+.footer {
+    background-color: #1E90FF;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
