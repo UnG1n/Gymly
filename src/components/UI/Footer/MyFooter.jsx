@@ -4,7 +4,7 @@ import styles from './MyFooter.module.css';
 const MyFooter = () => {
     return (
         <footer className={styles.footer}>
-            © 2025 SportProgress. Все права защищены.
+            © 2025 Gymly. Все права защищены.
         </footer>
     );
 };

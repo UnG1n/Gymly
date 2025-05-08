@@ -1,0 +1,10 @@
+.exercise-card-img {
+    width: 160px;         /* фиксированная ширина */
+    height: 120px;        /* фиксированная высота */
+    object-fit: contain;  /* или cover, если нужно заполнить блок */
+    display: block;
+    margin: 0 auto 12px auto; /* центрирование и отступ снизу */
+    background: #fff;     /* фон для прозрачных картинок */
+    border-radius: 8px;   /* скругление углов, если нужно */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* лёгкая тень */
+}

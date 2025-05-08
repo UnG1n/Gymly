@@ -2,24 +2,31 @@ import './App.css';
 import AppRouter from "./routes/AppRouter";
 import NavBar from "./components/UI/NavBar/NavBar";
 import MyFooter from "./components/UI/Footer/MyFooter";
+import {AuthContext, AuthProvider} from "./context/AuthContext";
+import {useContext} from "react";
+import {useShowNavFooter} from "./hooks/useShowNavFooter";
 
 function AppContent() {
+    const { isAuth } = useContext(AuthContext);
+    const showNavFooter = useShowNavFooter();
 
     return (
-        <div
-            style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
-        >
-            <NavBar />
-            <main style={{ flex: 1 }}>
+        <div>
+            {isAuth && showNavFooter && <NavBar />}
+            <main>
                 <AppRouter />
             </main>
-            <MyFooter />
+            {isAuth && showNavFooter && <MyFooter />}
         </div>
     );
 }
 
 function App() {
-    return <AppContent />;
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
+    );
 }
 
 export default App;

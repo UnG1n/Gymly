@@ -1,8 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styles from './NavBar.module.css';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {AuthContext} from "../../../context/AuthContext";
 
 const NavBar = () => {
+    const { logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
     return (
         <nav className={styles.navbar}>
             <div className={styles.logo}>Gymly</div>
@@ -28,24 +37,9 @@ const NavBar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/exercises" className={({ isActive}) =>
-                        isActive
-                            ? styles.active
-                            : ''
-                    }
-                             end>
-                        УПРАЖНЕНИЯ
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to="/login" className={({ isActive}) =>
-                        isActive
-                            ? styles.active
-                            : ''
-                    }
-                             end>
-                        ВХОД
-                    </NavLink>
+                    <button onClick={handleLogout} className={styles.navLinkButton}>
+                        ВЫЙТИ
+                    </button>
                 </li>
             </ul>
         </nav>

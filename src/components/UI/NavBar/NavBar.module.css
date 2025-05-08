@@ -36,3 +36,27 @@
     border-bottom: 2px solid #FFD700;
     color: #FFD700;
 }
+
+.navLinkButton {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding: 0;
+    margin: 0;
+}
+
+.navLinkButton:hover,
+.navLinkButton:focus {
+    outline: none;
+}
+
+.navLinkButton:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 2px;
+}
