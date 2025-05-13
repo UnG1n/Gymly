@@ -1,10 +1,199 @@
-.exercise-card-img {
-    width: 160px;         /* фиксированная ширина */
-    height: 120px;        /* фиксированная высота */
-    object-fit: contain;  /* или cover, если нужно заполнить блок */
-    display: block;
-    margin: 0 auto 12px auto; /* центрирование и отступ снизу */
-    background: #fff;     /* фон для прозрачных картинок */
-    border-radius: 8px;   /* скругление углов, если нужно */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* лёгкая тень */
+:root {
+    --color-primary: #3f51b5;
+    --color-secondary: #40ad99;
+    --color-accent1: #f0dd8e;
+    --color-accent2: #eaa65b;
+    --color-error: #ff5252;
+    --color-bg-light: #FFDAB9;
+    --color-card-bg: #fff;
+    --color-reps-bg: #eaa65b;
+    --color-text-main: #2e2e2e;
+    --color-text-secondary: #555555;
+    --border-radius: 18px;
+    --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-light: 0 6px 24px rgba(63, 81, 181, 0.10);
+}
+
+.exerciseListPage {
+    min-height: 100vh;
+    background: #fff;
+    padding: 18px 0 28px 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+.backButton {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid #c5c5c5;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 32px;
+    margin-bottom: 18px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.backButton:hover,
+.backButton:focus {
+    background: var(--color-bg-light);
+    color: var(--color-accent2);
+    border-color: var(--color-accent2);
+    outline: none;
+}
+.groupTitle {
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 0.01em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.groupDescription {
+    font-size: 1.08rem;
+    margin: 0 auto 24px auto;
+    color: var(--color-text-secondary);
+    max-width: 700px;
+    line-height: 1.5;
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.exerciseCardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.exerciseCard {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 24px rgba(64, 173, 153, 0.18);
+    padding: 32px 28px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+    text-align: center;
+    outline-offset: 4px;
+    min-height: 400px;
+}
+
+.exerciseCard:hover,
+.exerciseCard:focus {
+    box-shadow: 0 14px 40px rgba(63, 81, 181, 0.35);
+    border-color: var(--color-primary);
+    transform: translateY(-8px) scale(1.05);
+    background: var(--color-bg-light);
+    outline: none;
+}
+
+.exerciseCardImg {
+    width: 90%;
+    max-width: 320px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 28px;
+    filter: drop-shadow(0 6px 16px rgba(63, 81, 181, 0.3));
+    transition: filter var(--transition);
+}
+
+.exerciseCard:hover .exerciseCardImg,
+.exerciseCard:focus .exerciseCardImg {
+    filter: drop-shadow(0 10px 24px rgba(63, 81, 181, 0.45));
+}
+
+.exerciseContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+}
+
+.exerciseReps {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.repItem {
+    background: var(--color-error);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    user-select: none;
+    white-space: nowrap;
+    box-shadow: 0 3px 8px rgba(255, 82, 82, 0.6);
+    transition: background-color 0.25s ease;
+}
+
+.repItem:hover {
+    background-color: #ff3b3b;
+}
+
+.exerciseTitle {
+    margin: 0 0 16px 0;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.exerciseDescription {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.6;
+    padding: 0 12px;
+    max-width: 90%;
+}
+
+
+/* Адаптивность */
+@media (max-width: 900px) {
+    .exerciseCard {
+        padding: 28px 20px 24px 20px;
+        min-height: 360px;
+    }
+    .exerciseCardImg {
+        width: 75%;
+        max-width: 280px;
+    }
+    .exerciseTitle {
+        font-size: 1.3rem;
+    }
+    .exerciseDescription {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .exerciseCard {
+        padding: 24px 16px 20px 16px;
+        min-height: 320px;
+    }
+    .exerciseCardImg {
+        width: 70%;
+        max-width: 240px;
+    }
+    .exerciseTitle {
+        font-size: 1.2rem;
+    }
+    .exerciseDescription {
+        font-size: 0.95rem;
+    }
 }

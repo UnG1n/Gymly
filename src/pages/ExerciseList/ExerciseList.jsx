@@ -1,6 +1,7 @@
 import {useNavigate, useParams} from 'react-router-dom';
 import { exercises } from '../exercisesData';
 import { muscleGroups } from '../muscleGroups';
+import styles from './ExerciseList.module.css';
 
 export default function ExerciseList() {
     const { muscle } = useParams();
@@ -11,23 +12,37 @@ export default function ExerciseList() {
     if (!group) return <div>Группа мышц не найдена</div>;
 
     return (
-        <div className="exercise-list-page">
-            <h2>{group.title}</h2>
-            <p>{group.description}</p>
-            <div className="exercise-cards-grid">
+        <div className={styles.exerciseListPage}>
+            <button
+                className={styles.backButton}
+                onClick={() => navigate('/')}
+            >
+                ← Назад к выбору группы мышц
+            </button>
+
+            <h2 className={styles.groupTitle}>{group.title}</h2>
+            <p className={styles.groupDescription}>{group.description}</p>
+
+            <div className={styles.exerciseCardsGrid}>
                 {groupExercises.map(ex => (
                     <div
-                        className="exercise-card"
                         key={ex.id}
+                        className={styles.exerciseCard}
                         onClick={() => navigate(`/exercise/${ex.id}`)}
                         style={{ cursor: 'pointer' }}
                     >
-                        <img src={ex.image} alt={ex.title} className="exercise-card-img"/>
-                        <div className="exercise-reps">
-                            {ex.reps.map(rep => <span key={rep}>{rep}</span>)}
+                        <img
+                            src={ex.image}
+                            alt={ex.title}
+                            className={styles.exerciseCardImg}
+                        />
+                        <div className={styles.exerciseReps}>
+                            {ex.repsRecommended.map(rep => (
+                                <span key={rep} className={styles.repItem}>{rep}</span>
+                            ))}
                         </div>
-                        <h4>{ex.title}</h4>
-                        <p>{ex.description}</p>
+                        <h4 className={styles.exerciseTitle}>{ex.title}</h4>
+                        <p className={styles.exerciseDescription}>{ex.description}</p>
                     </div>
                 ))}
             </div>

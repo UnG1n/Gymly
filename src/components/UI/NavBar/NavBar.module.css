@@ -1,62 +1,102 @@
+:root {
+    --color-primary: #3f51b5;
+    --color-secondary: #40ad99;
+    --color-accent1: #f0dd8e;
+    --color-accent2: #eaa65b;
+    --color-error: #ff5252;
+    --color-bg-light: #FFDAB9;
+    --color-text-light: #fff;
+    --border-radius: 12px;
+    --transition: 0.25s ease;
+    --shadow: 0 3px 10px rgba(63, 81, 181, 0.15);
+}
+
 .navbar {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 14px 32px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: #1E90FF; /* основной синий */
-    padding: 10px 20px;
-    color: white;
+    justify-content: space-between;
     font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
-    font-weight: 700;
-    font-size: 24px;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    user-select: none;
+    color: var(--color-bg-light);
+    transition: color var(--transition);
+}
+
+.logo:hover,
+.logo:focus {
+    color: var(--color-accent2);
+    outline: none;
 }
 
 .navLinks {
     list-style: none;
     display: flex;
-    gap: 20px;
+    gap: 24px;
     margin: 0;
     padding: 0;
 }
 
-.navLinks li a {
-    color: white;
-    text-decoration: none;
+.navLinks li {
+    display: flex;
+    align-items: center;
+}
+
+.navLinks a {
+    color: var(--color-bg-light);
     font-weight: 600;
-    transition: color 0.3s ease;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition), color var(--transition);
+    border: 2px solid transparent;
 }
 
-.navLinks li a:hover {
-    color: #FFD700; /* золотистый при наведении */
+.navLinks a:hover,
+.navLinks a:focus {
+    border-color: var(--color-accent2);
+    color: var(--color-bg-light);
+    outline: none;
 }
 
+/* Выделение активной ссылки - только обводка */
 .active {
-    border-bottom: 2px solid #FFD700;
-    color: #FFD700;
+    border-color: var(--color-accent1);
+    color: var(--color-bg-light);
+    font-weight: 700;
+    box-shadow: none;
+    background: transparent;
 }
 
+/* Кнопка "Выйти" без обводки */
 .navLinkButton {
-    background: none;
+    background: transparent;
     border: none;
-    color: white;
+    color: var(--color-bg-light);
     font-weight: 600;
+    font-size: 1rem;
+    padding: 6px 14px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    font-size: inherit;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    padding: 0;
-    margin: 0;
+    transition: background-color var(--transition), color var(--transition);
 }
 
 .navLinkButton:hover,
 .navLinkButton:focus {
+    background-color: var(--color-accent2);
+    color: var(--color-primary);
     outline: none;
-}
-
-.navLinkButton:focus-visible {
-    outline: 2px solid #FFD700;
-    outline-offset: 2px;
 }

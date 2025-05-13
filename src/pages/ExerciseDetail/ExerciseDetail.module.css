@@ -1,133 +1,288 @@
-.exerciseDetailPage {
-    display: flex;
-    gap: 32px;
-    margin: 32px 0;
+:root {
+    --color-primary: #3f51b5;
+    --color-secondary: #40ad99;
+    --color-accent1: #f0dd8e;
+    --color-accent2: #eaa65b;
+    --color-error: #ff5252;
+    --color-bg-light: #FFDAB9;
+    --color-card-bg: #fff;
+    --color-text-main: #2e2e2e;
+    --color-text-secondary: #555555;
+    --border-radius: 16px;
+    --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-light: 0 4px 18px rgba(63, 81, 181, 0.10);
 }
 
+.exerciseDetailPage {
+    min-height: 100vh;
+    background: #fff;
+    padding: 24px;
+    font-family: 'Nunito', sans-serif;
+}
+
+/* Кнопка "Назад" */
+.backButton {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.backButton:hover,
+.backButton:focus {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+/* Контейнер с таблицей и графиком */
 .exerciseInfo {
-    flex: 1;
+    display: flex;
+    gap: 32px;
+    max-width: 1600px;
+    margin: 0 auto 28px auto;
+    align-items: stretch;
+}
+
+/* Общие стили для блоков с таблицей и графиком */
+.exerciseTableBlock,
+.exerciseChartBlock {
+    flex: 1 1 48%;
+    max-width: 48%;
+    min-width: 380px;
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
 }
 
 .exerciseTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-primary);
     text-align: center;
-    font-size: 2rem;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
-.exerciseTableBlock {
-    background: #ff6666;
-    border-radius: 20px;
-    padding: 24px 16px 16px 16px;
-    margin-bottom: 24px;
-    color: #fff;
+/* Внутренний контейнер графика */
+.exerciseChart {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 340px;
+    padding: 0;
+    display: flex;
 }
 
+/* Таблица */
 .exerciseTable {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 20px 8px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed;
 }
-
 .exerciseTable th,
 .exerciseTable td {
-    background: #ffe0b2;
-    color: #444;
     padding: 8px 12px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-
 .exerciseTable th {
-    background: #ff6666;
-    color: #fff;
+    white-space: normal;
+    word-break: break-word;
     font-weight: 700;
-    font-size: 1.1rem;
+    color: var(--color-text-main);
+    background-color: #f5f7ff;
+    padding: 10px 12px;
+}
+.exerciseTable tbody tr:last-child td {
+    border-bottom: none;
 }
 
-.exerciseChartBlock {
-    margin-top: 24px;
-}
-
-.exerciseChart {
-    width: 100%;
-    height: 200px;
-    background: #fff;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #aaa;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.exerciseTechnique {
-    flex: 1;
-}
-
-.exerciseImageBlock {
-    background: #ff6666;
-    border-radius: 20px;
-    padding: 16px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.exerciseImage {
-    width: 100%;
-    max-width: 330px;
-    border-radius: 12px;
-    background: #fff;
-    display: block;
-}
-
-.techniqueBlock {
-    background: #ff6666;
-    border-radius: 20px;
-    padding: 20px 20px 10px 20px;
-    color: #fff;
-}
-
-.techniqueBlock h3 {
-    margin-top: 0;
-    font-size: 1.15rem;
-}
-
-.techniqueBlock ol {
-    margin: 0 0 10px 20px;
-    padding: 0;
-}
-
-.techniqueBlock p {
-    margin: 0;
-    font-weight: 600;
-}
-
+/* Форма добавления */
 .resultForm {
     display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 100%;
 }
-.resultForm input,
-.resultForm select {
-    padding: 4px 8px;
-    border-radius: 6px;
+.topRow {
+    display: flex;
+    gap: 12px;
+    max-width: 100%;
+}
+.smallInput,
+.smallSelect {
+    flex: 1 1 120px;
+    min-width: 120px;
+    padding: 8px 12px;
+    font-size: 1rem;
     border: 1px solid #ccc;
-}
-.resultForm button {
-    padding: 4px 16px;
     border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+.smallInput:focus,
+.smallSelect:focus {
+    border-color: var(--color-primary);
+}
+.fullWidthInput {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+.fullWidthInput:focus {
+    border-color: var(--color-primary);
+}
+.submitButton {
+    align-self: flex-start;
+    background: var(--color-primary);
+    color: #fff;
     border: none;
-    background: #ffd700;
-    color: #333;
-    font-weight: 600;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background 0.2s;
+    box-sizing: border-box;
 }
-.resultForm button:hover {
-    background: #ffc107;
+.submitButton:hover,
+.submitButton:focus {
+    background: var(--color-secondary);
+    outline: none;
+}
+.deleteButton {
+    background-color: var(--color-error);
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+.deleteButton:hover,
+.deleteButton:focus {
+    background-color: #e04848;
+    outline: none;
+}
+
+/* Блок с техникой и картинкой */
+.exerciseTechniqueBlock {
+    display: flex;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto 28px auto;
+    align-items: flex-start;
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: 24px;
+}
+@media (max-width: 900px) {
+    .exerciseTechniqueBlock {
+        flex-direction: column;
+        gap: 20px;
+        padding: 16px;
+    }
+}
+.exerciseImageBlock {
+    flex: 1 1 340px;
+    min-width: 220px;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.exerciseImage {
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    object-fit: contain;
+}
+.techniqueBlock {
+    flex: 2 1 340px;
+    min-width: 220px;
+    padding: 0;
+    line-height: 1.6;
+    color: var(--color-text-main);
+}
+.techniqueBlock h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--color-primary);
+}
+.techniqueBlock ol {
+    padding-left: 20px;
+}
+.techniqueBlock li {
+    margin-bottom: 8px;
+}
+.techniqueBlock p {
+    font-style: italic;
+    color: var(--color-text-secondary);
+}
+
+/* Адаптивность */
+@media (max-width: 1100px) {
+    .exerciseInfo {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+        max-width: 100%;
+    }
+    .exerciseTableBlock,
+    .exerciseChartBlock {
+        max-width: 100%;
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .exerciseInfo {
+        flex-direction: column;
+    }
+    .exerciseTableBlock,
+    .exerciseChartBlock,
+    .exerciseTechniqueBlock {
+        max-width: 100%;
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .topRow {
+        flex-direction: column;
+    }
+    .smallInput,
+    .smallSelect {
+        flex: none;
+        width: 100%;
+        min-width: auto;
+    }
+    .submitButton {
+        width: 100%;
+    }
 }

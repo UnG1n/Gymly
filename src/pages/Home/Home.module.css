@@ -1,0 +1,98 @@
+:root {
+    --color-primary: #3f51b5;
+    --color-secondary: #40ad99;
+    --color-accent1: #f0dd8e;
+    --color-accent2: #eaa65b;
+    --color-error: #ff5252;
+    --color-bg-light: #FFDAB9;
+    --color-text-main: #2e2e2e;
+    --color-text-secondary: #555555;
+    --border-radius: 16px;
+    --transition: 0.25s ease;
+    --shadow-light: 0 4px 20px rgba(63, 81, 181, 0.15);
+}
+
+.homepageContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 16px 16px 16px;
+}
+
+.gridMuscleGroups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+}
+
+.muscleCard {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 18px rgba(64, 173, 153, 0.15);
+    padding: 20px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+    text-align: center;
+    outline-offset: 4px;
+}
+
+.muscleCard:hover,
+.muscleCard:focus {
+    box-shadow: 0 10px 30px rgba(63, 81, 181, 0.3);
+    border-color: var(--color-primary);
+    transform: translateY(-6px) scale(1.04);
+    background: var(--color-bg-light);
+    outline: none;
+}
+
+.muscleCardImage {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 3px 8px rgba(64, 173, 153, 0.2));
+    transition: filter var(--transition);
+}
+
+.muscleCard:hover .muscleCardImage,
+.muscleCard:focus .muscleCardImage {
+    filter: drop-shadow(0 6px 16px rgba(63, 81, 181, 0.3));
+}
+
+.muscleCardTitle {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+}
+
+.muscleCardDescription {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0 8px;
+}
+
+@media (max-width: 900px) {
+    .homepageContainer {
+        padding: 32px 16px 16px 16px;
+    }
+    .gridMuscleGroups {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .homepageContainer {
+        padding: 24px 12px 12px 12px;
+    }
+    .gridMuscleGroups {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}

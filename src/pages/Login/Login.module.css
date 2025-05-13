@@ -1,0 +1,100 @@
+:root {
+    /* Используем те же переменные, что и в основном проекте */
+    --color-primary: #3f51b5;
+    --color-secondary: #40ad99;
+    --color-error: #ff5252;
+    --color-card-bg: #fff;
+    --color-text-main: #2e2e2e;
+    --color-text-secondary: #555555;
+    --border-radius: 16px;
+    --shadow-light: 0 4px 18px rgba(63, 81, 181, 0.10);
+    --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loginPage {
+    min-height: 100vh;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.loginCard {
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: 32px 40px;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.loginTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.loginSubtitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.loginInput {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color var(--transition);
+    box-sizing: border-box;
+}
+
+.loginInput:focus {
+    border-color: var(--color-primary);
+}
+
+.loginButton {
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.loginButton:hover,
+.loginButton:focus {
+    background: var(--color-secondary);
+    outline: none;
+}
+
+.loginError {
+    color: var(--color-error);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .loginCard {
+        padding: 24px 20px;
+    }
+}

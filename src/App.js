@@ -11,9 +11,9 @@ function AppContent() {
     const showNavFooter = useShowNavFooter();
 
     return (
-        <div>
+        <div className="page-wrapper">
             {isAuth && showNavFooter && <NavBar />}
-            <main>
+            <main className="content">
                 <AppRouter />
             </main>
             {isAuth && showNavFooter && <MyFooter />}

@@ -28,6 +28,7 @@
   color: #61dafb;
 }
 
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +36,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex-grow: 1;
+  }
+
+footer, .footer {
+  background-color: #1E90FF;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 30px;
 }
