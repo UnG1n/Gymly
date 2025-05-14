@@ -115,6 +115,27 @@
     user-select: none;
 }
 
+.editProfileBtn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: var(--color-primary);
+    color: #FFDAB9; /* цвет текста, как ты просил ранее */
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition);
+    box-shadow: var(--shadow-light);
+    user-select: none;
+}
+
+.editProfileBtn:hover,
+.editProfileBtn:focus {
+    background-color: var(--color-secondary);
+    outline: none;
+}
+
 /* Адаптив */
 @media (max-width: 900px) {
     .profile-grid {

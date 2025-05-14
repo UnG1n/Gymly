@@ -1,0 +1,107 @@
+:root {
+    --color-primary: #3f51b5;
+    --color-secondary: #40ad99;
+    --color-error: #ff5252;
+    --color-card-bg: #fff;
+    --color-text-main: #2e2e2e;
+    --color-text-secondary: #555555;
+    --border-radius: 16px;
+    --shadow-light: 0 6px 24px rgba(63, 81, 181, 0.10);
+    --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Nunito', sans-serif;
+}
+.registerPage {
+    min-height: 100vh;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.registerCard {
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: 40px 48px;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    transition: box-shadow var(--transition);
+}
+
+.registerCard:hover,
+.registerCard:focus-within {
+    box-shadow: 0 10px 40px rgba(63, 81, 181, 0.2);
+}
+
+.registerTitle {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.registerInput {
+    padding: 14px 18px;
+    font-size: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color var(--transition);
+    box-sizing: border-box;
+}
+
+.registerInput:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-primary);
+}
+
+.registerButton {
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.registerButton:hover,
+.registerButton:focus {
+    background: var(--color-secondary);
+    outline: none;
+}
+
+
+@media (max-width: 600px) {
+    .loginCard, .registerCard {
+        padding: 28px 24px;
+    }
+
+    .loginTitle, .registerTitle {
+        font-size: 1.8rem;
+    }
+
+    .loginInput, .registerInput {
+        font-size: 0.95rem;
+        padding: 12px 14px;
+    }
+
+    .loginButton, .registerButton {
+        font-size: 1rem;
+        padding: 12px 0;
+    }
+}

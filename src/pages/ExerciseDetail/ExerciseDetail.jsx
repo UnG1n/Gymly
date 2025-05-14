@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { exercises } from '../exercisesData';
 import styles from './ExerciseDetail.module.css';
+import { UserContext } from '../../context/UserContext';
 
 import {
     LineChart,
@@ -25,14 +26,11 @@ function parseReps(repsStr) {
 
 function aggregateResultsForChart(results, isBodyweightExercise) {
     const map = new Map();
-
     results.forEach(row => {
         const { sets, reps } = parseReps(row.reps);
         const totalReps = sets * reps;
         const singleSetResult = isBodyweightExercise ? totalReps : row.weight * reps;
-
         const workoutNum = row.workout;
-
         if (!map.has(workoutNum)) {
             map.set(workoutNum, { workout: workoutNum, totalResult: singleSetResult });
         } else {
@@ -40,9 +38,7 @@ function aggregateResultsForChart(results, isBodyweightExercise) {
             existing.totalResult += singleSetResult;
         }
     });
-
     const aggregated = Array.from(map.values()).sort((a, b) => a.workout - b.workout);
-
     return aggregated.slice(-8);
 }
 
@@ -50,6 +46,7 @@ export default function ExerciseDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const exercise = exercises.find((ex) => String(ex.id) === id);
+    const { user, saveExerciseResult, fetchExerciseResults, removeExerciseResult } = useContext(UserContext);
 
     const bodyweightExercises = [
         'Подтягивания',
@@ -58,7 +55,6 @@ export default function ExerciseDetail() {
         'Подъем ног с упором на локтях',
         'Планка',
     ];
-
     const isBodyweightExercise = exercise && bodyweightExercises.includes(exercise.title);
 
     const [results, setResults] = useState([]);
@@ -70,6 +66,15 @@ export default function ExerciseDetail() {
     });
 
     const [newRecord, setNewRecord] = useState(false);
+
+    // Загружаем результаты всегда при заходе и после изменений
+    useEffect(() => {
+        async function loadResults() {
+            const loadedResults = await fetchExerciseResults(id);
+            setResults(loadedResults || []);
+        }
+        loadResults();
+    }, [id, fetchExerciseResults]);
 
     useEffect(() => {
         if (results.length < 1) {
@@ -85,8 +90,6 @@ export default function ExerciseDetail() {
         const lastWorkoutNum = Math.max(...chartData.map(d => d.workout));
         const lastResultObj = chartData.find(d => d.workout === lastWorkoutNum);
         const lastResult = lastResultObj ? lastResultObj.totalResult : 0;
-
-        // Новый рекорд, если последний результат >= максимального и > 0
         setNewRecord(lastResult >= maxResult && lastResult > 0);
     }, [results, isBodyweightExercise]);
 
@@ -96,7 +99,7 @@ export default function ExerciseDetail() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.reps) return;
 
@@ -110,16 +113,23 @@ export default function ExerciseDetail() {
             difficulty: form.difficulty,
         };
 
-        setResults([...results, newEntry]);
+        await saveExerciseResult(id, newEntry);
+
+        // После сохранения - всегда перезагружаем результаты
+        const loadedResults = await fetchExerciseResults(id);
+        setResults(loadedResults || []);
         setForm({ weight: '', reps: '', difficulty: 'Средне' });
     };
 
-    const handleDelete = (index) => {
-        setResults((prev) => prev.filter((_, i) => i !== index));
+    const handleDelete = async (index) => {
+        // Здесь предполагается, что removeExerciseResult реализован в UserContext
+        await removeExerciseResult(id, index);
+        const loadedResults = await fetchExerciseResults(id);
+        setResults(loadedResults || []);
     };
 
     const chartData = aggregateResultsForChart(results, isBodyweightExercise);
-    const maxResult = Math.max(...chartData.map(d => d.totalResult));
+    const maxResult = chartData.length ? Math.max(...chartData.map(d => d.totalResult)) : 0;
 
     return (
         <div className={styles.exerciseDetailPage}>
@@ -150,7 +160,6 @@ export default function ExerciseDetail() {
                             const { sets, reps } = parseReps(row.reps);
                             const totalReps = sets * reps;
                             const resultVal = isBodyweightExercise ? totalReps : row.weight * reps;
-
                             return (
                                 <tr key={idx}>
                                     <td>{row.workout}</td>
@@ -211,7 +220,6 @@ export default function ExerciseDetail() {
                                 <option value="Тяжело">Тяжело</option>
                             </select>
                         </div>
-
                         <button type="submit" className={styles.submitButton}>Добавить</button>
                     </form>
                 </div>
@@ -250,7 +258,13 @@ export default function ExerciseDetail() {
                                     tick={{ fill: '#3f51b5', fontWeight: '600' }}
                                 />
                                 <YAxis
-                                    label={{ value: isBodyweightExercise ? 'Повторения' : 'Результат', angle: -90, position: 'insideLeft', fill: '#3f51b5', fontWeight: '600' }}
+                                    label={{
+                                        value: isBodyweightExercise ? 'Повторения' : 'Результат',
+                                        angle: -90,
+                                        position: 'insideLeft',
+                                        fill: '#3f51b5',
+                                        fontWeight: '600'
+                                    }}
                                     tick={{ fill: '#3f51b5' }}
                                 />
                                 <Tooltip

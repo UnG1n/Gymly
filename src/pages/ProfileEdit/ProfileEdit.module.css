@@ -1,0 +1,158 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: var(--color-card-bg);
+    padding: 32px;
+    border-radius: var(--border-radius);
+    max-width: 600px; /* увеличена максимальная ширина */
+    width: 100%;
+    position: relative;
+    box-shadow: var(--shadow-light);
+}
+
+.closeBtn {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: color var(--transition);
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+    color: var(--color-primary);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* увеличено расстояние между элементами формы */
+}
+
+.form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"] {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color var(--transition);
+    margin-top: 8px;
+}
+
+.form input[type="text"]:focus,
+.form input[type="email"]:focus,
+.form input[type="password"]:focus {
+    border-color: var(--color-primary);
+}
+
+.fileLabel {
+    position: relative;
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--color-primary);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition);
+    user-select: none;
+    text-align: center;
+    box-shadow: var(--shadow-light);
+}
+
+.fileLabel:hover,
+.fileLabel:focus {
+    background-color: var(--color-secondary);
+    outline: none;
+}
+
+.fileInput {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.avatarPreview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 16px auto; /* увеличено расстояние от текста */
+    box-shadow: var(--shadow-light);
+    border: 3px solid var(--color-primary);
+}
+
+.saveBtn {
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 14px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition);
+    margin-top: 24px; /* увеличено расстояние от аватара */
+}
+
+.saveBtn:hover,
+.saveBtn:focus {
+    background: var(--color-secondary);
+    outline: none;
+}
+
+/* Адаптивные стили для небольших экранов */
+@media (max-width: 640px) {
+    .modal {
+        padding: 24px;
+    }
+
+    .form {
+        gap: 16px;
+    }
+
+    .form input[type="text"],
+    .form input[type="email"],
+    .form input[type="password"] {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .fileLabel {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .saveBtn {
+        padding: 12px 0;
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"          // тип базы данных
+  url      = env("DATABASE_URL")   // переменная окружения с URL подключения
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Модели данных
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
+  avatar   String?
+  exerciseResults Json?
+}
