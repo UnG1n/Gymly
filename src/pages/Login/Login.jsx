@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import MyInput from "../../components/UI/Input/MyInput";
 import MyButton from "../../components/UI/Button/MyButton";
 import styles from "./Login.module.css";
 import api from "../../api";
-import logo from "../../assets/other/logo.png"; // путь к вашему логотипу
+import background from "../../assets/other/gymBackground.jpg";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -36,23 +36,23 @@ const Login = () => {
 
     return (
         <div className={styles.loginPage}>
-            <div className={styles.pageBackground} />
+            <div
+                className={styles.pageBackground}
+                style={{ backgroundImage: `url(${background})` }}
+            />
             <div className={styles.loginCard}>
-                <div className={styles.headerWithLogo}>
-                    <img src={logo} alt="Логотип" className={styles.logo} />
-                    <h2 className={styles.loginTitle}>Вход</h2>
-                </div>
+                <h2 className={styles.loginTitle}>Вход</h2>
                 <form onSubmit={handleSubmit} className={styles.loginForm}>
+                    <div className={styles.fieldLabel}>Email</div>
                     <MyInput
-                        label="Email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Введите email"
                         required
                     />
+                    <div className={styles.fieldLabel}>Пароль</div>
                     <MyInput
-                        label="Пароль"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -60,12 +60,18 @@ const Login = () => {
                         required
                     />
                     {error && (
-                        <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
+                        <div className={styles.loginError}>{error}</div>
                     )}
                     <MyButton type="submit" className={styles.loginButton}>
                         Войти
                     </MyButton>
                 </form>
+                <div className={styles.registerPrompt}>
+                    Ещё не зарегистрированы?{" "}
+                    <Link to="/register" className={styles.registerLink}>
+                        Зарегистрироваться
+                    </Link>
+                </div>
             </div>
         </div>
     );

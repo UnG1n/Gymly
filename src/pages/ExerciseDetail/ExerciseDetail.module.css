@@ -20,7 +20,6 @@
     font-family: 'Nunito', sans-serif;
 }
 
-/* Кнопка "Назад" */
 .backButton {
     background: transparent;
     color: var(--color-primary);
@@ -41,16 +40,15 @@
     outline: none;
 }
 
-/* Контейнер с таблицей и графиком */
 .exerciseInfo {
     display: flex;
+    flex-direction: row;
     gap: 32px;
     max-width: 1600px;
     margin: 0 auto 28px auto;
     align-items: stretch;
 }
 
-/* Общие стили для блоков с таблицей и графиком */
 .exerciseTableBlock,
 .exerciseChartBlock {
     flex: 1 1 48%;
@@ -72,60 +70,69 @@
     margin-bottom: 18px;
 }
 
-/* Внутренний контейнер графика */
 .exerciseChart {
     flex: 1 1 auto;
     width: 100%;
-    height: 100%;
     min-height: 340px;
     padding: 0;
     display: flex;
 }
 
-/* Таблица */
+.exerciseTableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
 .exerciseTable {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    table-layout: fixed;
+    table-layout: auto;
+    font-size: 1rem;
 }
+
 .exerciseTable th,
 .exerciseTable td {
     padding: 8px 12px;
     text-align: left;
     border-bottom: 1px solid #eee;
-    overflow: hidden;
     white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .exerciseTable th {
-    white-space: normal;
-    word-break: break-word;
-    font-weight: 700;
-    color: var(--color-text-main);
     background-color: #f5f7ff;
     padding: 10px 12px;
+    font-weight: 700;
+    color: var(--color-text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 .exerciseTable tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Форма добавления */
 .resultForm {
     display: flex;
     flex-direction: column;
     gap: 12px;
     max-width: 100%;
 }
+
 .topRow {
     display: flex;
     gap: 12px;
     max-width: 100%;
+    flex-wrap: wrap;
 }
+
 .smallInput,
 .smallSelect {
     flex: 1 1 120px;
-    min-width: 120px;
+    min-width: 0;
     padding: 8px 12px;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -134,10 +141,12 @@
     transition: border-color 0.2s;
     box-sizing: border-box;
 }
+
 .smallInput:focus,
 .smallSelect:focus {
     border-color: var(--color-primary);
 }
+
 .fullWidthInput {
     width: 100%;
     padding: 8px 12px;
@@ -148,9 +157,11 @@
     transition: border-color 0.2s;
     box-sizing: border-box;
 }
+
 .fullWidthInput:focus {
     border-color: var(--color-primary);
 }
+
 .submitButton {
     align-self: flex-start;
     background: var(--color-primary);
@@ -163,11 +174,13 @@
     transition: background 0.2s;
     box-sizing: border-box;
 }
+
 .submitButton:hover,
 .submitButton:focus {
     background: var(--color-secondary);
     outline: none;
 }
+
 .deleteButton {
     background-color: var(--color-error);
     border: none;
@@ -180,13 +193,13 @@
     width: 100%;
     box-sizing: border-box;
 }
+
 .deleteButton:hover,
 .deleteButton:focus {
     background-color: #e04848;
     outline: none;
 }
 
-/* Блок с техникой и картинкой */
 .exerciseTechniqueBlock {
     display: flex;
     gap: 32px;
@@ -198,13 +211,7 @@
     box-shadow: var(--shadow-light);
     padding: 24px;
 }
-@media (max-width: 900px) {
-    .exerciseTechniqueBlock {
-        flex-direction: column;
-        gap: 20px;
-        padding: 16px;
-    }
-}
+
 .exerciseImageBlock {
     flex: 1 1 340px;
     min-width: 220px;
@@ -213,12 +220,14 @@
     align-items: center;
     justify-content: center;
 }
+
 .exerciseImage {
     width: 100%;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
     object-fit: contain;
 }
+
 .techniqueBlock {
     flex: 2 1 340px;
     min-width: 220px;
@@ -226,21 +235,63 @@
     line-height: 1.6;
     color: var(--color-text-main);
 }
+
 .techniqueBlock h3 {
     font-size: 1.3rem;
     font-weight: 700;
     margin-bottom: 12px;
     color: var(--color-primary);
 }
+
 .techniqueBlock ol {
     padding-left: 20px;
 }
+
 .techniqueBlock li {
     margin-bottom: 8px;
 }
+
 .techniqueBlock p {
     font-style: italic;
     color: var(--color-text-secondary);
+}
+
+/* Прогресс-бар и строка прогресса */
+.progressContainer {
+    margin-top: 18px;
+    background: #f5f7ff;
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.progressTitle {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 6px;
+}
+
+.progressBar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.progressText {
+    font-weight: 600;
+    color: var(--color-text-main);
+    text-align: center;
 }
 
 /* Адаптивность */
@@ -260,19 +311,25 @@
 }
 
 @media (max-width: 900px) {
-    .exerciseInfo {
-        flex-direction: column;
-    }
-    .exerciseTableBlock,
-    .exerciseChartBlock,
     .exerciseTechniqueBlock {
+        flex-direction: column;
+        gap: 20px;
+        padding: 16px;
+    }
+    .exerciseImageBlock {
         max-width: 100%;
-        min-width: auto;
-        width: 100%;
     }
 }
 
 @media (max-width: 600px) {
+    .exerciseDetailPage {
+        padding: 8px;
+    }
+    .exerciseTableBlock,
+    .exerciseChartBlock,
+    .exerciseTechniqueBlock {
+        padding: 8px;
+    }
     .topRow {
         flex-direction: column;
     }
@@ -280,9 +337,29 @@
     .smallSelect {
         flex: none;
         width: 100%;
-        min-width: auto;
+        font-size: 0.9rem;
     }
     .submitButton {
         width: 100%;
+        font-size: 0.95rem;
+    }
+    .exerciseChart {
+        min-height: 220px;
+    }
+    .exerciseTableWrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .exerciseTable {
+        font-size: 0.82rem;
+        min-width: 520px;
+    }
+    .exerciseTable th,
+    .exerciseTable td {
+        padding: 4px 6px;
+        font-size: 0.82rem;
+    }
+    .exerciseTitle {
+        font-size: 1.1rem;
     }
 }

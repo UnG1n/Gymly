@@ -5,7 +5,7 @@ import api from "../../api";
 import styles from "./ProfileEdit.module.css";
 
 export default function ProfileEdit({ isOpen, onClose }) {
-    const { user, fetchUserProfile } = useContext(UserContext);
+    const { user, updateUser } = useContext(UserContext);
     const [form, setForm] = useState({ name: "", email: "", password: "", avatar: null });
     const [avatarPreview, setAvatarPreview] = useState("");
 
@@ -19,7 +19,7 @@ export default function ProfileEdit({ isOpen, onClose }) {
             });
             if (user.avatar) {
                 setAvatarPreview(
-                    user.avatar.startsWith("http") ? user.avatar : `http://localhost:5000${user.avatar}`
+                    user.avatar.startsWith("http") ? user.avatar : `/api${user.avatar}`
                 );
             } else {
                 setAvatarPreview("");
@@ -47,23 +47,31 @@ export default function ProfileEdit({ isOpen, onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Вы не авторизованы. Пожалуйста, войдите заново.');
+            return;
+        }
+
         try {
             const formData = new FormData();
             formData.append("name", form.name);
             formData.append("email", form.email);
-            if (form.password) {
-                formData.append("password", form.password);
-            }
-            if (form.avatar) {
-                formData.append("avatar", form.avatar);
-            }
+            if (form.password) formData.append("password", form.password);
+            if (form.avatar) formData.append("avatar", form.avatar);
 
-            await api.put("/profile", formData, {
+            const { data } = await api.put("/profile", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            await fetchUserProfile();
-
+            updateUser(data);
+            if (data.avatar) {
+                setAvatarPreview(
+                    data.avatar.startsWith("http") ? data.avatar : `/api${data.avatar}`
+                );
+            } else {
+                setAvatarPreview("");
+            }
             onClose();
         } catch (error) {
             console.error("Ошибка обновления профиля:", error);

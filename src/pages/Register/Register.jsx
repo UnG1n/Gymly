@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import MyInput from '../../components/UI/Input/MyInput';
 import MyButton from '../../components/UI/Button/MyButton';
 import styles from './Register.module.css';
-import api from '../../api'; // axios-инстанс с базовым URL
+import api from '../../api';
+import background from '../../assets/other/gymBackground.jpg';
 
 export default function Register() {
     const [form, setForm] = useState({
@@ -38,7 +39,6 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Форма отправлена');
         if (!validate()) return;
 
         try {
@@ -47,7 +47,6 @@ export default function Register() {
                 password: form.password,
                 name: form.email.split('@')[0] || 'User',
             };
-            console.log('Отправляем на сервер:', payload);
 
             const { data } = await api.post('/register', payload);
 
@@ -62,13 +61,7 @@ export default function Register() {
 
             navigate('/');
         } catch (err) {
-            console.error('Ошибка при регистрации:', err.response?.data);
-
             if (err.response?.data?.errors) {
-                // Логируем ошибки валидации с сервера
-                console.log('Ошибки валидации с сервера:', err.response.data.errors);
-
-                // Преобразуем массив ошибок в объект для отображения рядом с полями
                 const serverErrors = {};
                 err.response.data.errors.forEach(({ param, msg }) => {
                     serverErrors[param] = msg;
@@ -82,11 +75,15 @@ export default function Register() {
 
     return (
         <div className={styles.registerPage}>
+            <div
+                className={styles.pageBackground}
+                style={{ backgroundImage: `url(${background})` }}
+            />
             <div className={styles.registerCard}>
                 <h2 className={styles.registerTitle}>Регистрация</h2>
                 <form onSubmit={handleSubmit} className={styles.registerForm} noValidate>
+                    <div className={styles.fieldLabel}>Email</div>
                     <MyInput
-                        label="Email"
                         type="email"
                         name="email"
                         value={form.email}
@@ -94,8 +91,8 @@ export default function Register() {
                         placeholder="Введите email"
                         error={errors.email}
                     />
+                    <div className={styles.fieldLabel}>Пароль</div>
                     <MyInput
-                        label="Пароль"
                         type="password"
                         name="password"
                         value={form.password}
@@ -103,8 +100,8 @@ export default function Register() {
                         placeholder="Введите пароль не менее 6 символов"
                         error={errors.password}
                     />
+                    <div className={styles.fieldLabel}>Повторите пароль</div>
                     <MyInput
-                        label="Подтвердите пароль"
                         type="password"
                         name="confirmPassword"
                         value={form.confirmPassword}
@@ -112,11 +109,17 @@ export default function Register() {
                         placeholder="Повторите пароль"
                         error={errors.confirmPassword}
                     />
-                    {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
+                    {error && <div className={styles.registerError}>{error}</div>}
                     <MyButton type="submit" className={styles.registerButton}>
                         Зарегистрироваться
                     </MyButton>
                 </form>
+                <div className={styles.loginPrompt}>
+                    Уже зарегистрированы?{" "}
+                    <Link to="/login" className={styles.loginLink}>
+                        Авторизация
+                    </Link>
+                </div>
             </div>
         </div>
     );

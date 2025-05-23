@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 // Настройка CORS
 app.use(cors({
-    origin: 'http://localhost:3000', // Разрешаем запросы с фронтенда
+    origin: ['http://localhost:3000', 'http://gymly.ru', 'https://gymly.ru'],
     credentials: true,
 }));
 
@@ -112,7 +112,7 @@ app.get('/api/profile', authMiddleware, async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: req.userId },
-            select: { id: true, email: true, name: true, avatar: true, exerciseResults: true }
+            select: { id: true, email: true, name: true, avatar: true, exerciseResults: true, exerciseNotes: true }
         });
         res.json(user);
     } catch (error) {
@@ -142,16 +142,14 @@ app.put('/api/profile', authMiddleware, upload.single('avatar'), async (req, res
             dataToUpdate.password = await bcrypt.hash(password, 10);
         }
 
-        // Обновляем пользователя
         await prisma.user.update({
             where: { id: req.userId },
             data: dataToUpdate,
         });
 
-        // После обновления заново получаем пользователя с полным набором данных, включая exerciseResults
         const updatedUser = await prisma.user.findUnique({
             where: { id: req.userId },
-            select: { id: true, email: true, name: true, avatar: true, exerciseResults: true },
+            select: { id: true, email: true, name: true, avatar: true, exerciseResults: true, exerciseNotes: true },
         });
 
         res.json(updatedUser);
@@ -207,6 +205,39 @@ app.post('/api/user/exercise/:exerciseId/result', authMiddleware, async (req, re
         res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
+
+// --- Удаление результата упражнения ---
+app.delete('/api/user/exercise/:exerciseId/result/:resultIndex', authMiddleware, async (req, res) => {
+    try {
+        const exerciseId = String(req.params.exerciseId);
+        const resultIndex = parseInt(req.params.resultIndex, 10);
+
+        const user = await prisma.user.findUnique({ where: { id: req.userId } });
+        let exerciseResults = user.exerciseResults || {};
+
+        if (!exerciseResults[exerciseId] || !Array.isArray(exerciseResults[exerciseId])) {
+            return res.status(404).json({ error: 'Результат не найден' });
+        }
+
+        exerciseResults[exerciseId] = exerciseResults[exerciseId].filter((_, idx) => idx !== resultIndex);
+
+        exerciseResults[exerciseId] = exerciseResults[exerciseId].map((result, idx) => ({
+            ...result,
+            workout: idx + 1,
+        }));
+
+        await prisma.user.update({
+            where: { id: req.userId },
+            data: { exerciseResults }
+        });
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
 
 // --- Статическая раздача загруженных файлов ---
 app.use('/uploads', express.static(uploadDir));

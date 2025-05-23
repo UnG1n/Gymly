@@ -26,3 +26,18 @@
     color: #ff5252; /* ярко-красный при наведении */
     outline: none;
 }
+
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 12px 0;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 8px 0;
+        font-size: 0.8rem;
+    }
+}

@@ -100,3 +100,48 @@
     color: var(--color-primary);
     outline: none;
 }
+
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 16px;
+    }
+    .logo {
+        font-size: 1.4rem;
+    }
+    .navLinks {
+        gap: 12px;
+    }
+    .navLinks a,
+    .navLinkButton {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .logo {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+    .navLinks {
+        gap: 8px;
+        justify-content: center;
+        width: 100%;
+    }
+    .navLinks li {
+        flex: 1;
+        justify-content: center;
+    }
+    .navLinks a,
+    .navLinkButton {
+        font-size: 0.8rem;
+        padding: 4px;
+        text-align: center;
+    }
+}

@@ -14,22 +14,25 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-function parseReps(repsStr) {
-    const normalized = repsStr.toLowerCase().replace('х', 'x').replace('по', 'x');
-    const match = normalized.match(/^(\d+)x(\d+)$/);
-    if (match) {
-        return { sets: parseInt(match[1], 10), reps: parseInt(match[2], 10) };
+// Новая функция для разбора подходов и повторений
+function parseSetsReps(repsStr) {
+    if (typeof repsStr === "number") return { sets: 1, reps: repsStr };
+    const normalized = repsStr.toLowerCase().replace(/[хx*по ]+/g, "x");
+    const parts = normalized.split("x").map(Number);
+    if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+        return { sets: parts[0], reps: parts[1] };
     }
-    const reps = parseInt(repsStr, 10);
-    return { sets: 1, reps: isNaN(reps) ? 0 : reps };
+    const onlyNumber = repsStr.match(/\d+/);
+    if (onlyNumber) return { sets: 1, reps: Number(onlyNumber[0]) };
+    return { sets: 1, reps: 0 };
 }
 
 function aggregateResultsForChart(results, isBodyweightExercise) {
     const map = new Map();
     results.forEach(row => {
-        const { sets, reps } = parseReps(row.reps);
+        const { sets, reps } = parseSetsReps(row.reps);
         const totalReps = sets * reps;
-        const singleSetResult = isBodyweightExercise ? totalReps : row.weight * reps;
+        const singleSetResult = isBodyweightExercise ? totalReps : row.weight * sets * reps;
         const workoutNum = row.workout;
         if (!map.has(workoutNum)) {
             map.set(workoutNum, { workout: workoutNum, totalResult: singleSetResult });
@@ -122,7 +125,6 @@ export default function ExerciseDetail() {
     };
 
     const handleDelete = async (index) => {
-        // Здесь предполагается, что removeExerciseResult реализован в UserContext
         await removeExerciseResult(id, index);
         const loadedResults = await fetchExerciseResults(id);
         setResults(loadedResults || []);
@@ -157,12 +159,12 @@ export default function ExerciseDetail() {
                         </thead>
                         <tbody>
                         {results.map((row, idx) => {
-                            const { sets, reps } = parseReps(row.reps);
+                            const { sets, reps } = parseSetsReps(row.reps);
                             const totalReps = sets * reps;
-                            const resultVal = isBodyweightExercise ? totalReps : row.weight * reps;
+                            const resultVal = isBodyweightExercise ? totalReps : row.weight * sets * reps;
                             return (
                                 <tr key={idx}>
-                                    <td>{row.workout}</td>
+                                    <td>{idx + 1}</td>
                                     {!isBodyweightExercise && <td>{row.weight}</td>}
                                     <td>{row.reps}</td>
                                     <td>{row.difficulty}</td>
@@ -223,7 +225,6 @@ export default function ExerciseDetail() {
                         <button type="submit" className={styles.submitButton}>Добавить</button>
                     </form>
                 </div>
-
                 <div className={styles.exerciseChartBlock}>
                     {newRecord && (
                         <div style={{
@@ -275,6 +276,7 @@ export default function ExerciseDetail() {
                                 <Line
                                     type="monotone"
                                     dataKey="totalResult"
+                                    name="Сила"
                                     stroke="#4caf50"
                                     strokeWidth={3}
                                     dot={(props) => {

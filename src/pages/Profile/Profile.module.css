@@ -62,7 +62,6 @@
     margin: 0;
 }
 
-
 /* Email под никнеймом */
 .profile-email {
     font-size: 1rem;
@@ -134,6 +133,44 @@
 .editProfileBtn:focus {
     background-color: var(--color-secondary);
     outline: none;
+}
+
+/* Прогресс-бар и строка прогресса */
+.progressContainer {
+    margin-top: 18px;
+    background: #f5f7ff;
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.progressTitle {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 6px;
+}
+
+.progressBar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.progressText {
+    font-weight: 600;
+    color: var(--color-text-main);
+    text-align: center;
 }
 
 /* Адаптив */

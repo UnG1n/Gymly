@@ -14,18 +14,18 @@ import {
 import styles from "./Profile.module.css";
 import defaultAvatar from "./avatar.jpg";
 
-function parseReps(reps) {
-    if (typeof reps === "number") return reps;
+function parseSetsReps(reps) {
+    if (typeof reps === "number") return { sets: 1, reps };
     if (typeof reps === "string") {
         const normalized = reps.toLowerCase().replace(/[хx*по ]+/g, "x");
         const parts = normalized.split("x").map(Number);
         if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-            return parts[1];
+            return { sets: parts[0], reps: parts[1] };
         }
         const onlyNumber = reps.match(/\d+/);
-        if (onlyNumber) return Number(onlyNumber[0]);
+        if (onlyNumber) return { sets: 1, reps: Number(onlyNumber[0]) };
     }
-    return 0;
+    return { sets: 1, reps: 0 };
 }
 
 export default function Profile() {
@@ -36,9 +36,24 @@ export default function Profile() {
 
     const exerciseResults = user?.exerciseResults || {};
 
-    // Считаем общее количество выполненных подходов (результатов)
-    const totalExercisesDone = Object.values(exerciseResults).reduce(
+    // Количество уникальных упражнений с результатами
+    const totalExercisesDone = Object.keys(exerciseResults).length;
+
+    // Количество всех подходов (результатов)
+    const totalSetsDone = Object.values(exerciseResults).reduce(
         (sum, ex) => sum + (Array.isArray(ex.results) ? ex.results.length : 0),
+        0
+    );
+
+    // Общий поднятый вес (учитывая подходы и повторения)
+    const totalWeightLifted = Object.values(exerciseResults).reduce(
+        (sum, ex) => sum + (Array.isArray(ex.results)
+            ? ex.results.reduce((subSum, result) => {
+                const weight = typeof result.weight === "number" ? result.weight : 0;
+                const { sets, reps } = parseSetsReps(result.reps);
+                return subSum + (weight * sets * reps);
+            }, 0)
+            : 0),
         0
     );
 
@@ -50,7 +65,7 @@ export default function Profile() {
             label: data.name || `Упражнение ${id}`,
         }));
 
-    // ID упражнений без веса (замените на ваши ID)
+    // ID упражнений без веса (замените на свои)
     const exercisesWithoutWeight = [7, 28, 31, 32];
 
     // Автовыбор первого упражнения при загрузке, если нет выбранного
@@ -70,11 +85,11 @@ export default function Profile() {
             const isWeightless = exercisesWithoutWeight.includes(Number(selectedExercise.value));
 
             const chartFormatted = data.map((item, idx) => {
-                const reps = typeof item.reps === "string" ? parseReps(item.reps) : item.reps || 0;
+                const { sets, reps } = parseSetsReps(item.reps);
                 const weight = typeof item.weight === "number" ? item.weight : 0;
                 return {
                     workout: item.workout || idx + 1,
-                    totalResult: isWeightless ? reps : weight * reps,
+                    totalResult: isWeightless ? sets * reps : weight * sets * reps,
                 };
             });
             setChartData(chartFormatted);
@@ -82,14 +97,27 @@ export default function Profile() {
         loadData();
     }, [selectedExercise, exerciseResults]);
 
-    if (loading) return <div>Загрузка профиля...</div>;
+    // Рассчитываем прогресс: насколько максимальный результат больше первого (в процентах)
+    const progress = (() => {
+        if (chartData.length < 2) return { percent: 0, text: 'Недостаточно данных для расчёта прогресса' };
+        const firstResult = chartData[0].totalResult;
+        const maxResult = Math.max(...chartData.map(d => d.totalResult));
+        if (firstResult <= 0) return { percent: 0, text: 'Недостаточно данных для расчёта прогресса' };
+        const percent = Math.round(((maxResult - firstResult) / firstResult) * 100);
+        const isPositive = percent >= 0;
+        return {
+            percent,
+            text: `Прогресс: ${isPositive ? '+' : ''}${percent}% (максимальный результат ${maxResult}, первый ${firstResult})`
+        };
+    })();
 
+    if (loading) return <div>Загрузка профиля...</div>;
     if (!user) return <div>Пользователь не найден</div>;
 
     const avatarUrl = user.avatar
         ? user.avatar.startsWith("http")
             ? user.avatar
-            : `http://localhost:5000${user.avatar}`
+            : `https://gymly.ru${user.avatar}`
         : defaultAvatar;
 
     return (
@@ -100,7 +128,9 @@ export default function Profile() {
                     <h2>{user.name && user.name.trim() !== "" ? user.name : "Имя не указано"}</h2>
                     <div className={styles["profile-email"]}>{user.email || "Email не указан"}</div>
                     <div className={styles["profile-stats"]}>
-                        <div>Выполнено упражнений: {totalExercisesDone}</div>
+                        <div>Выполнено разных упражнений: {totalExercisesDone}</div>
+                        <div>Выполнено подходов: {totalSetsDone}</div>
+                        <div>Общий поднятый вес: {totalWeightLifted} кг</div>
                     </div>
                     <button
                         onClick={() => setIsEditOpen(true)}
@@ -109,7 +139,6 @@ export default function Profile() {
                     >
                         Редактировать профиль
                     </button>
-                    {/* Новая кнопка обновления данных */}
                     <button
                         onClick={fetchUserProfile}
                         className={styles.editProfileBtn}
@@ -133,24 +162,42 @@ export default function Profile() {
                     />
 
                     {selectedExercise && chartData.length > 0 && (
-                        <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis
-                                    dataKey="workout"
-                                    label={{ value: "Тренировка №", position: "insideBottom", dy: 10 }}
-                                />
-                                <YAxis label={{ value: "Результат", angle: -90, position: "insideLeft" }} />
-                                <Tooltip />
-                                <Line
-                                    type="monotone"
-                                    dataKey="totalResult"
-                                    stroke="#4caf50"
-                                    strokeWidth={3}
-                                    dot={{ r: 4 }}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        <>
+                            <div style={{ width: '100%', height: '300px' }}>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={chartData}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis
+                                            dataKey="workout"
+                                            label={{ value: "Тренировка №", position: "insideBottom", dy: 10 }}
+                                        />
+                                        <YAxis label={{ value: "Результат", angle: -90, position: "insideLeft" }} />
+                                        <Tooltip />
+                                        <Line
+                                            type="monotone"
+                                            dataKey="totalResult"
+                                            name="Сила"
+                                            stroke="#4caf50"
+                                            strokeWidth={3}
+                                            dot={{ r: 4 }}
+                                        />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <div className={styles.progressContainer}>
+                                <div className={styles.progressTitle}>Ваш прогресс</div>
+                                <div className={styles.progressBar}>
+                                    <div
+                                        className={styles.progressFill}
+                                        style={{
+                                            width: `${Math.max(0, progress.percent)}%`,
+                                            backgroundColor: progress.percent >= 0 ? 'var(--color-primary)' : 'var(--color-error)'
+                                        }}
+                                    />
+                                </div>
+                                <div className={styles.progressText}>{progress.text}</div>
+                            </div>
+                        </>
                     )}
 
                     {selectedExercise && chartData.length === 0 && (

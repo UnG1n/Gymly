@@ -1,106 +1,88 @@
-
 :root {
     --color-primary: #3f51b5;
     --color-secondary: #40ad99;
     --color-error: #ff5252;
-    --color-card-bg: #fff;
+    --color-card-bg: rgba(255, 255, 255, 0.95);
     --color-text-main: #2e2e2e;
     --color-text-secondary: #555555;
-    --border-radius: 16px;
+    --color-accent2: #eaa65b;
+    --border-radius: 24px;
     --shadow-light: 0 6px 24px rgba(63, 81, 181, 0.10);
+    --shadow-medium: 0 8px 32px rgba(63, 81, 181, 0.15);
+    --shadow-highlight: 0 2px 8px rgba(40, 167, 69, 0.15);
     --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: 'Nunito', sans-serif;
 }
 
 .loginPage {
     min-height: 100vh;
-    background: #fff;
+    background: #f5f6fa;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 24px;
     position: relative;
     overflow: hidden;
+    color: var(--color-text-main);
 }
 
 .pageBackground {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/other/gymBackground.jpg'); /* замените на ваш путь */
     background-size: cover;
     background-position: center;
-    opacity: 0.15;
-    z-index: -1;
-    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+    filter: blur(4px);
+    transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
 .loginCard {
     background: var(--color-card-bg);
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-light);
+    box-shadow: var(--shadow-medium);
     padding: 40px 48px;
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    transition: box-shadow var(--transition);
+    gap: 32px;
+    transition: box-shadow var(--transition), transform var(--transition);
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    backdrop-filter: blur(6px);
 }
 
 .loginCard:hover,
 .loginCard:focus-within {
-    box-shadow: 0 10px 40px rgba(63, 81, 181, 0.2);
-}
-
-.headerWithLogo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    justify-content: center;
-    margin-bottom: 16px;
-}
-
-.logo {
-    height: 80px; /* увеличьте с 48px до 80px или нужного размера */
-    width: auto;
-    user-select: none;
-    object-fit: contain;
-    display: block;
+    box-shadow: var(--shadow-highlight);
+    transform: translateY(-2px);
 }
 
 .loginTitle {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 800;
     color: var(--color-primary);
     text-align: center;
     margin: 0;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .loginForm {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
 }
 
-.loginInput {
-    padding: 14px 18px;
+.fieldLabel {
     font-size: 1rem;
-    border: 1.5px solid #ccc;
-    border-radius: 12px;
-    outline: none;
-    transition: border-color var(--transition);
-    box-sizing: border-box;
-}
-
-.loginInput:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 8px var(--color-primary);
+    font-weight: 600;
+    color: #3f51b5;
 }
 
 .loginButton {
@@ -108,41 +90,64 @@
     color: #fff;
     border: none;
     border-radius: 12px;
-    padding: 14px 0;
+    padding: 16px 0;
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background var(--transition);
+    transition: background var(--transition), transform var(--transition);
+    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.2);
 }
 
 .loginButton:hover,
 .loginButton:focus {
     background: var(--color-secondary);
     outline: none;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(63, 81, 181, 0.25);
 }
 
 .loginError {
     color: var(--color-error);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     text-align: center;
+    padding: 12px 16px;
+    background: #ffebee;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(255,82,82,0.1);
+}
+
+.registerPrompt {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-top: 16px;
+    font-weight: 500;
+}
+
+.registerLink {
+    color: var(--color-accent2);
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 6px;
+    transition: color var(--transition), text-decoration var(--transition);
+}
+
+.registerLink:hover,
+.registerLink:focus {
+    color: var(--color-primary);
+    outline: none;
+    text-decoration: underline;
 }
 
 @media (max-width: 600px) {
     .loginCard {
-        padding: 28px 24px;
+        padding: 32px 24px;
+        border-radius: 20px;
     }
 
     .loginTitle {
-        font-size: 1.8rem;
-    }
-
-    .loginInput {
-        font-size: 0.95rem;
-        padding: 12px 14px;
-    }
-
-    .loginButton {
-        font-size: 1rem;
-        padding: 12px 0;
+        font-size: 2rem;
     }
 }
