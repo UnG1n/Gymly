@@ -71,11 +71,10 @@
 }
 
 /* Статистика пользователя */
+/* test */
 .profile-stats {
     display: flex;
     justify-content: space-around;
-    width: 100%;
-    margin-top: 16px;
     font-weight: 600;
     font-size: 1rem;
     color: var(--color-primary);
