@@ -33,6 +33,7 @@
     user-select: none;
     color: var(--color-bg-light);
     transition: color var(--transition);
+    text-decoration: none;
 }
 
 .logo:hover,

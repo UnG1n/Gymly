@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { exercises } from '../exercisesData';
 import styles from './ExerciseDetail.module.css';
 import { UserContext } from '../../context/UserContext';
-
 import {
     LineChart,
     Line,
@@ -14,7 +13,6 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-// Новая функция для разбора подходов и повторений
 function parseSetsReps(repsStr) {
     if (typeof repsStr === "number") return { sets: 1, reps: repsStr };
     const normalized = repsStr.toLowerCase().replace(/[хx*по ]+/g, "x");
@@ -45,6 +43,13 @@ function aggregateResultsForChart(results, isBodyweightExercise) {
     return aggregated.slice(-8);
 }
 
+function getChartHeight() {
+    if (window.innerWidth <= 400) return 220;
+    if (window.innerWidth <= 600) return 270;
+    if (window.innerWidth <= 900) return 320;
+    return 340;
+}
+
 export default function ExerciseDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -61,16 +66,14 @@ export default function ExerciseDetail() {
     const isBodyweightExercise = exercise && bodyweightExercises.includes(exercise.title);
 
     const [results, setResults] = useState([]);
-
     const [form, setForm] = useState({
         weight: '',
         reps: '',
         difficulty: 'Средне',
     });
-
     const [newRecord, setNewRecord] = useState(false);
+    const [chartHeight, setChartHeight] = useState(getChartHeight());
 
-    // Загружаем результаты всегда при заходе и после изменений
     useEffect(() => {
         async function loadResults() {
             const loadedResults = await fetchExerciseResults(id);
@@ -96,6 +99,12 @@ export default function ExerciseDetail() {
         setNewRecord(lastResult >= maxResult && lastResult > 0);
     }, [results, isBodyweightExercise]);
 
+    useEffect(() => {
+        const onResize = () => setChartHeight(getChartHeight());
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
+
     if (!exercise) return <div>Упражнение не найдено</div>;
 
     const handleChange = (e) => {
@@ -118,7 +127,6 @@ export default function ExerciseDetail() {
 
         await saveExerciseResult(id, newEntry);
 
-        // После сохранения - всегда перезагружаем результаты
         const loadedResults = await fetchExerciseResults(id);
         setResults(loadedResults || []);
         setForm({ weight: '', reps: '', difficulty: 'Средне' });
@@ -131,7 +139,20 @@ export default function ExerciseDetail() {
     };
 
     const chartData = aggregateResultsForChart(results, isBodyweightExercise);
-    const maxResult = chartData.length ? Math.max(...chartData.map(d => d.totalResult)) : 0;
+
+    // Рассчитываем прогресс: насколько максимальный результат больше первого (в процентах)
+    const progress = (() => {
+        if (chartData.length < 2) return { percent: 0, text: 'Недостаточно данных для расчёта прогресса' };
+        const firstResult = chartData[0].totalResult;
+        const maxResult = Math.max(...chartData.map(d => d.totalResult));
+        if (firstResult <= 0) return { percent: 0, text: 'Недостаточно данных для расчёта прогресса' };
+        const percent = Math.round(((maxResult - firstResult) / firstResult) * 100);
+        const isPositive = percent >= 0;
+        return {
+            percent,
+            text: `Прогресс: ${isPositive ? '+' : ''}${percent}% (максимальный результат ${maxResult}, первый ${firstResult})`
+        };
+    })();
 
     return (
         <div className={styles.exerciseDetailPage}>
@@ -145,46 +166,46 @@ export default function ExerciseDetail() {
             <div className={styles.exerciseInfo}>
                 <div className={styles.exerciseTableBlock}>
                     <div className={styles.exerciseTitle}>{exercise.title}</div>
-
-                    <table className={styles.exerciseTable}>
-                        <thead>
-                        <tr>
-                            <th>Номер тренировки</th>
-                            {!isBodyweightExercise && <th>Вес кг</th>}
-                            <th>Повторения</th>
-                            <th>Сложность</th>
-                            <th>Результат</th>
-                            <th>Действия</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {results.map((row, idx) => {
-                            const { sets, reps } = parseSetsReps(row.reps);
-                            const totalReps = sets * reps;
-                            const resultVal = isBodyweightExercise ? totalReps : row.weight * sets * reps;
-                            return (
-                                <tr key={idx}>
-                                    <td>{idx + 1}</td>
-                                    {!isBodyweightExercise && <td>{row.weight}</td>}
-                                    <td>{row.reps}</td>
-                                    <td>{row.difficulty}</td>
-                                    <td>{resultVal.toFixed(1)}</td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            className={styles.deleteButton}
-                                            onClick={() => handleDelete(idx)}
-                                            aria-label={`Удалить результат №${idx + 1}`}
-                                        >
-                                            Удалить
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
-
+                    <div className={styles.exerciseTableWrapper}>
+                        <table className={styles.exerciseTable}>
+                            <thead>
+                            <tr>
+                                <th>Номер тренировки</th>
+                                {!isBodyweightExercise && <th>Вес кг</th>}
+                                <th>Повторения</th>
+                                <th>Сложность</th>
+                                <th>Результат</th>
+                                <th>Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {results.map((row, idx) => {
+                                const { sets, reps } = parseSetsReps(row.reps);
+                                const totalReps = sets * reps;
+                                const resultVal = isBodyweightExercise ? totalReps : row.weight * reps;
+                                return (
+                                    <tr key={idx}>
+                                        <td>{idx + 1}</td>
+                                        {!isBodyweightExercise && <td>{row.weight}</td>}
+                                        <td>{row.reps}</td>
+                                        <td>{row.difficulty}</td>
+                                        <td>{resultVal.toFixed(1)}</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className={styles.deleteButton}
+                                                onClick={() => handleDelete(idx)}
+                                                aria-label={`Удалить результат №${idx + 1}`}
+                                            >
+                                                Удалить
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
                     <form onSubmit={handleSubmit} className={styles.resultForm}>
                         <div className={styles.topRow}>
                             {!isBodyweightExercise && (
@@ -242,7 +263,7 @@ export default function ExerciseDetail() {
                         </div>
                     )}
                     <div className={styles.exerciseChart}>
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height={chartHeight} minHeight={220}>
                             <LineChart
                                 data={chartData}
                                 margin={{ top: 20, right: 30, left: 0, bottom: 40 }}
@@ -281,6 +302,7 @@ export default function ExerciseDetail() {
                                     strokeWidth={3}
                                     dot={(props) => {
                                         const { cx, cy, payload } = props;
+                                        const maxResult = Math.max(...chartData.map(d => d.totalResult));
                                         return payload.totalResult === maxResult ? (
                                             <circle cx={cx} cy={cy} r={8} fill="#4caf50" stroke="#388e3c" strokeWidth={2} />
                                         ) : (
@@ -292,6 +314,19 @@ export default function ExerciseDetail() {
                                 />
                             </LineChart>
                         </ResponsiveContainer>
+                    </div>
+                    <div className={styles.progressContainer}>
+                        <div className={styles.progressTitle}>Ваш прогресс</div>
+                        <div className={styles.progressBar}>
+                            <div
+                                className={styles.progressFill}
+                                style={{
+                                    width: `${Math.max(0, progress.percent)}%`,
+                                    backgroundColor: progress.percent >= 0 ? 'var(--color-primary)' : 'var(--color-error)'
+                                }}
+                            />
+                        </div>
+                        <div className={styles.progressText}>{progress.text}</div>
                     </div>
                 </div>
             </div>
@@ -322,17 +357,11 @@ export default function ExerciseDetail() {
             </div>
 
             <style>{`
-        @keyframes fadeInScale {
-          0% {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-      `}</style>
+                @keyframes fadeInScale {
+                    0% { opacity: 0; transform: scale(0.8); }
+                    100% { opacity: 1; transform: scale(1); }
+                }
+            `}</style>
         </div>
     );
 }

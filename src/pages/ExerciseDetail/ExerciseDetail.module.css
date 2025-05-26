@@ -57,6 +57,7 @@
     background: var(--color-card-bg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
+    box-sizing: border-box;
     padding: 24px;
     display: flex;
     flex-direction: column;

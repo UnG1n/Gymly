@@ -36,6 +36,7 @@
     background: var(--color-card-bg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
+    box-sizing: border-box;
     padding: 32px 24px;
     text-align: center;
     display: flex;

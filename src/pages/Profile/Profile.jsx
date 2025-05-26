@@ -89,7 +89,7 @@ export default function Profile() {
                 const weight = typeof item.weight === "number" ? item.weight : 0;
                 return {
                     workout: item.workout || idx + 1,
-                    totalResult: isWeightless ? sets * reps : weight * sets * reps,
+                    totalResult: isWeightless ? sets * reps : weight * reps,
                 };
             });
             setChartData(chartFormatted);

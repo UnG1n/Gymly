@@ -14,7 +14,9 @@ const NavBar = () => {
 
     return (
         <nav className={styles.navbar}>
-            <div className={styles.logo}>Gymly</div>
+            <NavLink to="/" className={styles.logo}>
+                Gymly
+            </NavLink>
             <ul className={styles.navLinks}>
                 <li>
                     <NavLink to="/" className={({ isActive}) =>
