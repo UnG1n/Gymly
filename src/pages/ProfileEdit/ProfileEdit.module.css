@@ -15,7 +15,7 @@
     background: var(--color-card-bg);
     padding: 32px;
     border-radius: var(--border-radius);
-    max-width: 600px; /* увеличена максимальная ширина */
+    max-width: 600px;
     width: 100%;
     position: relative;
     box-shadow: var(--shadow-light);
@@ -41,7 +41,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* увеличено расстояние между элементами формы */
+    gap: 20px;
 }
 
 .form label {
@@ -105,7 +105,7 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    margin: 16px auto; /* увеличено расстояние от текста */
+    margin: 16px auto;
     box-shadow: var(--shadow-light);
     border: 3px solid var(--color-primary);
 }
@@ -120,7 +120,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: background var(--transition);
-    margin-top: 24px; /* увеличено расстояние от аватара */
+    margin-top: 24px;
 }
 
 .saveBtn:hover,
@@ -129,7 +129,6 @@
     outline: none;
 }
 
-/* Адаптивные стили для небольших экранов */
 @media (max-width: 640px) {
     .modal {
         padding: 24px;

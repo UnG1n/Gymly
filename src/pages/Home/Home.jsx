@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { muscleGroups } from '../muscleGroups';
-import styles from './Home.module.css'; // предположим, что стили в CSS-модуле
+import styles from './Home.module.css';
 
 export default function Home() {
     const navigate = useNavigate();

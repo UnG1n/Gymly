@@ -1,10 +1,10 @@
 .button {
-    background: #ff5252; /* основной цвет сайта */
+    background: #ff5252;
     border: 1px solid #ff5252;
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
     box-sizing: border-box;
-    color: #FFFFFF; /* белый текст */
+    color: #FFFFFF;
     cursor: pointer;
     display: inline-block;
     font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
@@ -26,8 +26,8 @@
 
 .button:hover,
 .button:active {
-    background-color: #FFFFFF; /* фон при наведении - белый */
-    color: #ff5252; /* цвет текста при наведении - основной цвет */
+    background-color: #FFFFFF;
+    color: #ff5252;
 }
 
 .button:active {

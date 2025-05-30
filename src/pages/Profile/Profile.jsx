@@ -65,7 +65,7 @@ export default function Profile() {
             label: data.name || `Упражнение ${id}`,
         }));
 
-    // ID упражнений без веса (замените на свои)
+    // ID упражнений без веса
     const exercisesWithoutWeight = [7, 28, 31, 32];
 
     // Автовыбор первого упражнения при загрузке, если нет выбранного

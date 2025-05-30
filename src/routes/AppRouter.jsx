@@ -21,7 +21,6 @@ function AppRouter() {
             <Route path="/profile/edit" element={isAuth ? <ProfileEdit /> : <Navigate to="/login" replace />} />
             <Route path="/exercises/:muscle" element={isAuth ? <ExerciseList /> : <Navigate to="/login" replace />} />
             <Route path="/exercise/:id" element={isAuth ? <ExerciseDetail /> : <Navigate to="/login" replace />} />
-            {/* Можно добавить 404 страницу */}
             <Route path="*" element={<Navigate to={isAuth ? "/" : "/login"} replace />} />
         </Routes>
     );

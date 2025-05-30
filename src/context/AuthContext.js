@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }) => {
     // Обновление данных пользователя (например, после редактирования профиля)
     const updateUser = useCallback((updatedUser) => {
         setUser(updatedUser);
-        // localStorage обновится автоматически через useEffect выше
     }, []);
 
     return (
