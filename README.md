@@ -30,7 +30,7 @@
 - **Database:** PostgreSQL, Prisma ORM.
 - **Протокол взаимодействия:** — REST API.
 - **Валидация данных:** — express-validator.
-  
+---
 <details>
 <summary>📁 Архитектура &amp;</summary>
 
@@ -41,7 +41,7 @@
 
 </details>
 ---
-## 📝 Примеры интрефейса
+## 📝 Примеры интерфейса
 <img src="https://github.com/UnG1n/Gymly/blob/master/image_examples/1.png" width="350"/>
 <br><em>Страница выбора группы мышц</em>
 <br>
