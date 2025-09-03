@@ -40,18 +40,11 @@
 - Взаимодействие клиент <-> сервер по REST, бэкенд <-> БД через Prisma ORM.
 
 </details>
-
----
-
-## 🖼️ Примеры интерфейса
-
-
-
 ---
 
 ## 📝 Примеры интрефейса
 
-https://github.com/UnG1n/Gymly/raw/image_examples/1.png
+https://github.com/UnG1n/image_examples/1.png
 <img src="screenshots/statistics.png" width="320"/>
 
 ---
