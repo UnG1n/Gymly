@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+<h1 align="center">🏋️‍♂️ Fitness Tracker</h1>
+<p align="center">
+  Веб-приложение для отслеживания спортивного прогресса: ввод и учет результатов тренировок, анализ статистики, персонализация профиля.
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## 🚀 О проекте
 
-In the project directory, you can run:
+**Fitness Tracker** — это удобная система для регистрации и оценки ваших тренировок.  
+Пользователь может выбрать нужную группу мышц, подобрать упражнение, ввести свои результаты, следить за прогрессом и мотивировать себя на новые достижения.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ✨ Функционал
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Регистрация и авторизация** (c автоматическим доступом после создания аккаунта)
+- **Выбор группы мышц и упражнения**
+- **Добавление и удаление результатов**
+- **Просмотр статистики по упражнениям** (графики/числовые показатели)
+- **Редактирование профиля (модальное окно)**
+- **Доступ по ролям: гость (только вход/регистрация), пользователь (полный доступ)**
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🖥️ Стек технологий
 
-### `npm run build`
+- **Frontend:** React
+- **Backend:** Node.js, Express
+- **ORM:** Prisma
+- **Database:** PostgreSQL
+- **Аутентификация:** JWT (middleware)
+- **Документация/Диаграммы:** PlantUML
+- **Стилизация:** CSS/SCSS/MUI/Styled Components (уточнить)
+  
+<details>
+<summary>📁 Архитектура &amp; диаграммы</summary>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 📦 docs/ — диаграммы компонентов, последовательностей, UseCase (PlantUML)
+- 🖼️ screenshots/ — выгляд интерфейса
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+</details>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## ⚡ Быстрый старт
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Клонируйте проект
+git clone https://github.com/<your-username>/<repo-name>.git
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Перейдите в папку backend и установите зависимости
+cd backend
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Запустите сервер
+npm start
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Перейдите в папку frontend и установите зависимости
+cd ../frontend
+npm install
 
-## Learn More
+Запустите клиентское приложение
+npm start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+text
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### ⚠️ Для работы локально:
+- Настройте переменные окружения `.env` для базы данных и секретного ключа JWT
+- Убедитесь, что установлен PostgreSQL
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📝 Примеры интрефейса
 
-### Analyzing the Bundle Size
+<img src="screenshots/home.png" width="320"/> <img src="screenshots/exercise-detail.png" width="320"/>
+<img src="screenshots/statistics.png" width="320"/>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 📊 Диаграммы (docs/diagrams/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Use Case:** роли пользователя и гостя, сценарии доступа
+- **Component:** основные блоки архитектуры проекта
+- **Sequence:** сценарий добавления результата тренировки
 
-### Advanced Configuration
+Можно просмотреть исходный PlantUML-код и готовые изображения.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 💡 Возможные доработки
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Интеграция Push-уведомлений, e-mail
+- Более детальная аналитика статистики тренировок
+- Поддержка мобильной версии
+- Рефакторинг стилей на Tailwind/Emotion/MUI
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🧑‍💻 Автор
+
+*Имя Фамилия*  
+[LinkedIn](https://linkedin.com/in/ваш-линкед-ин) • [Telegram](https://t.me/ваш_ник)
+
+---
+
+## 📎 Лицензия
+
+MIT © 2025
+
+---
+
+_Можно дополнить описание страниц, REST-эндпоинтов, структуру папок, отдельные особенности проекта и кейсы использования._
+
+[web:6][web:4][web:12][web:1]
