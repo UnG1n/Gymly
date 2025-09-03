@@ -43,9 +43,7 @@
 ---
 
 ## 📝 Примеры интрефейса
-
-[https://github.com/UnG1n/image_examples/1.png](https://github.com/UnG1n/Gymly/blob/master/image_examples/1.png)
-<img src="screenshots/statistics.png" width="320"/>
+<img src="[screenshots/home.png](https://github.com/UnG1n/image_examples/1.png](https://github.com/UnG1n/Gymly/blob/master/image_examples/1.png)" width="300"/> <img src="[screenshots/exercise-detail.png](https://github.com/UnG1n/Gymly/blob/master/image_examples/2.png)" width="300"/> <img src="[screenshots/statistics.png](https://github.com/UnG1n/Gymly/blob/master/image_examples/3.png)" width="300"/>
 
 ---
 
